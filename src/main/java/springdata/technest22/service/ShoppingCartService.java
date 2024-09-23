@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import springdata.technest22.model.Product;
 import springdata.technest22.model.ShoppingCart;
@@ -17,25 +18,23 @@ public class ShoppingCartService {
 
     private final ProductRepository productRepository;
     private final ShoppingRepository shoppingRepository;
-    private final CacheManager cacheManager;
+    private final RedisTemplate<Long, Product> redisTemplate;
 
     public Product update (Long id){
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
         product.setName("Irshad");
-        Cache cache = cacheManager.getCache("product");
-        cache.put(id, product);
+        redisTemplate.opsForValue().set(id,product);
         return product;
     }
 
     public Product getProduct (Long id){
-        Cache cache = cacheManager.getCache("product");
-        Product product = cache.get(id, Product.class);
+        Product product = redisTemplate.opsForValue().get(id);
         if(product == null){
             log.info("Get from DB: {}", id);
             product = productRepository.findById(id).orElseThrow(RuntimeException::new);
-        cache.put(id, product);
+            redisTemplate.opsForValue().set(id,product);
         return product;
         }else {
             log.info("Get from Cache: {}", id);
@@ -45,8 +44,8 @@ public class ShoppingCartService {
 
     public void delete (Long id){
         productRepository.deleteById(id);
-        Cache cache = cacheManager.getCache("product");
-        cache.evict(cache);
+        redisTemplate.opsForValue().getAndDelete(id);
+
     }
 
     public void createShoppingCart (ShoppingCart cart){
@@ -64,7 +63,9 @@ public class ShoppingCartService {
                 .name(product.getName())
                 .build();
 
+
         productRepository.save(p);
+        redisTemplate.opsForValue().set(p.getId(),p);
     }
 
     public ShoppingCart addProductToCart(Long cartId, Long productId) {

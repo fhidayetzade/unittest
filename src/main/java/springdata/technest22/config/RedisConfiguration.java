@@ -10,6 +10,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import springdata.technest22.model.Product;
 
 import java.time.Duration;
 
@@ -39,8 +40,8 @@ public class RedisConfiguration {
     }
 
     @Bean
-    public RedisTemplate<Long, Object> longObjectRedisTemplate(){
-        final RedisTemplate<Long, Object> template = new RedisTemplate<>();
+    public RedisTemplate<Long, Product> longObjectRedisTemplate(){
+        final RedisTemplate<Long, Product> template = new RedisTemplate<>();
         template.setConnectionFactory(lettuceConnectionFactory());
         var jacksonRedisSerializer = new GenericJackson2JsonRedisSerializer();
         template.setKeySerializer(jacksonRedisSerializer);
