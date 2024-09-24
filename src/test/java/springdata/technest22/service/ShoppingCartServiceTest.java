@@ -33,20 +33,9 @@ class ShoppingCartServiceTest {
     @Mock
     private ProductRepository productRepository;
     private Product product;
-    @Mock
-    private CacheManager cacheManager;
 
-    @Test
-    void testGetProductSuccessCach(){
-        Product getProduct = Product.builder()
-                .id(1L)
-                .name("Farid")
-                .build();
-        when(productRepository.findById(1l)).thenReturn(Optional.of(getProduct));
-        Product product1 = productService.getProduct(1L);
 
-//        verify(valueOperations,times(1)).
-    }
+
 
     @BeforeEach
     void setUp() {
@@ -117,58 +106,5 @@ class ShoppingCartServiceTest {
         verify(valueOperations, times(1)).get(1L);
     }
 
-    private Product existingProduct;
-    private ProductDto productDto;
 
-   /* @BeforeEach
-    void setUp1() {
-        MockitoAnnotations.openMocks(this);
-
-        // Sample Product and ProductDto
-        existingProduct = new Product();
-        existingProduct.setId(1L);
-        existingProduct.setName("Old Product");
-
-        productDto = new ProductDto();
-        productDto.setName("Updated Product");
-    }
-
-    @Test
-    void testUpdateProduct() {
-        // Mock productRepository.findById to return the existing product
-        when(productRepository.findById(1L)).thenReturn(Optional.of(existingProduct));
-        // Mock productRepository.save to return the updated product
-        when(productRepository.save(any(Product.class))).thenReturn(existingProduct);
-
-        // Call the method to be tested
-        Product updatedProduct = productService.update(1L, productDto);
-
-        // Verify the results
-        assertNotNull(updatedProduct);
-        assertEquals("Updated Product", updatedProduct.getName());
-
-        // Verify that findById and save were called on the productRepository
-        verify(productRepository, times(1)).findById(1L);
-        verify(productRepository, times(1)).save(existingProduct);
-
-        // Verify that RedisTemplate was called correctly
-        verify(redisTemplate, times(1)).opsForValue().set(1L, updatedProduct);
-    }
-
-    @Test
-    void testUpdateProductThrowsExceptionWhenNotFound() {
-        // Mock productRepository.findById to return empty
-        when(productRepository.findById(1L)).thenReturn(Optional.empty());
-
-        // Call the method and assert the exception
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            productService.update(1L, productDto);
-        });
-
-        assertEquals("Student not found", exception.getMessage());
-
-        // Verify that save and RedisTemplate were never called
-        verify(productRepository, never()).save(any(Product.class));
-        verify(redisTemplate, never()).opsForValue();
-    }*/
 }
