@@ -6,6 +6,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import springdata.technest22.dto.ProductDto;
 import springdata.technest22.model.Product;
 import springdata.technest22.model.ShoppingCart;
 import springdata.technest22.repository.ProductRepository;
@@ -20,14 +21,16 @@ public class ShoppingCartService {
     private final ShoppingRepository shoppingRepository;
     private final RedisTemplate<Long, Product> redisTemplate;
 
-    public Product update (Long id){
-
+    public Product update(Long id, ProductDto productDto) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
-        product.setName("Irshad");
-        redisTemplate.opsForValue().set(id,product);
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        redisTemplate.delete(id);
+        product.setName(productDto.getName());
+        productRepository.save(product);
+        redisTemplate.opsForValue().set(id, product);
         return product;
     }
+
 
     public Product getProduct (Long id){
         Product product = redisTemplate.opsForValue().get(id);

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springdata.technest22.dto.ProductDto;
 import springdata.technest22.model.Product;
 import springdata.technest22.model.ShoppingCart;
 import springdata.technest22.service.ShoppingCartService;
@@ -36,8 +37,8 @@ public class ProductController {
     }
 
     @PutMapping("/update/{id}")
-    public Product product(@RequestBody Long id){
-        return shoppingCartService.update(id);
+    public Product product(@PathVariable Long id, @RequestBody ProductDto productDto){
+        return shoppingCartService.update(id, productDto);
     }
 
     @GetMapping("/getProduct/{id}")
