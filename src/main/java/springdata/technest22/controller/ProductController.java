@@ -1,49 +1,22 @@
 package springdata.technest22.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import springdata.technest22.dto.ProductDto;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import springdata.technest22.model.Product;
-import springdata.technest22.model.ShoppingCart;
-import springdata.technest22.service.ShoppingCartService;
-
-import java.util.Map;
+import springdata.technest22.service.ProductService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("product")
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ShoppingCartService shoppingCartService;
+    private final ProductService productService;
 
-
-
-    @PostMapping("/createShopping")
-    public void createShopping (ShoppingCart cart){
-        shoppingCartService.createShoppingCart(cart);
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable Long id){
+        return productService.getProduct(id);
     }
-    @PostMapping("/createProduct")
-    public void createProduct (@RequestBody Product product){
-        shoppingCartService.createProduct(product);
-    }
-
-    @PostMapping("/{cId}/{pId}/product")
-    public ResponseEntity<ShoppingCart> addProductToCart(@PathVariable Long cId, @PathVariable Long pId) {
-
-        ShoppingCart cart = shoppingCartService.addProductToCart(cId, pId);
-        return new ResponseEntity<>(cart, HttpStatus.OK);
-    }
-
-    @PutMapping("/update/{id}")
-    public Product product(@PathVariable Long id, @RequestBody ProductDto productDto){
-        return shoppingCartService.update(id, productDto);
-    }
-
-    @GetMapping("/getProduct/{id}")
-    public Product getProduct (@PathVariable Long id){
-        return shoppingCartService.getProduct(id);
-    }
-
 }

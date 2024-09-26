@@ -1,19 +1,14 @@
 package springdata.technest22.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import springdata.technest22.dto.ProductDto;
 import springdata.technest22.model.Product;
-import springdata.technest22.model.ShoppingCart;
 import springdata.technest22.repository.ProductRepository;
-import springdata.technest22.repository.ShoppingRepository;
 
 import java.util.Optional;
 
@@ -22,10 +17,10 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ShoppingCartServiceTest {
+class ShoppingCartServiceRedisTest {
 
     @InjectMocks
-    private ShoppingCartService productService;
+    private ShoppingCartServiceRedis productService;
     @Mock
     private RedisTemplate<Long, Product> redisTemplate;
     @Mock

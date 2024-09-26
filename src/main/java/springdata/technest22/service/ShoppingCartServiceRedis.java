@@ -2,8 +2,6 @@ package springdata.technest22.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import springdata.technest22.dto.ProductDto;
@@ -15,7 +13,7 @@ import springdata.technest22.repository.ShoppingRepository;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ShoppingCartService {
+public class ShoppingCartServiceRedis {
 
     private final ProductRepository productRepository;
     private final ShoppingRepository shoppingRepository;
@@ -71,14 +69,14 @@ public class ShoppingCartService {
         redisTemplate.opsForValue().set(p.getId(),p);
     }
 
-    public ShoppingCart addProductToCart(Long cartId, Long productId) {
+    /*public ShoppingCart addProductToCart(Long cartId, Long productId) {
         ShoppingCart cart = shoppingRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         cart.getProducts().add(product);
         return shoppingRepository.save(cart);
-    }
+    }*/
 
 
 }
