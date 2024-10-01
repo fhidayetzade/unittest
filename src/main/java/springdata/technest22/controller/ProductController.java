@@ -1,49 +1,47 @@
 package springdata.technest22.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springdata.technest22.dto.ProductDto;
+import springdata.technest22.dto.ProductRequestDto;
+import springdata.technest22.dto.ProductResponseDto;
+import springdata.technest22.exception.SuccessResponse;
 import springdata.technest22.model.Product;
-import springdata.technest22.model.ShoppingCart;
-import springdata.technest22.service.ShoppingCartService;
+import springdata.technest22.service.ProductService;
+import springdata.technest22.service.ShoppingCartServiceRedis;
 
-import java.util.Map;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("product")
 @RequiredArgsConstructor
+@Validated
 public class ProductController {
 
-    private final ShoppingCartService shoppingCartService;
+    private final ProductService productService;
 
-
-
-    @PostMapping("/createShopping")
-    public void createShopping (ShoppingCart cart){
-        shoppingCartService.createShoppingCart(cart);
-    }
-    @PostMapping("/createProduct")
-    public void createProduct (@RequestBody Product product){
-        shoppingCartService.createProduct(product);
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable Long id){
+        return productService.getProduct(id);
     }
 
-    @PostMapping("/{cId}/{pId}/product")
-    public ResponseEntity<ShoppingCart> addProductToCart(@PathVariable Long cId, @PathVariable Long pId) {
-
-        ShoppingCart cart = shoppingCartService.addProductToCart(cId, pId);
-        return new ResponseEntity<>(cart, HttpStatus.OK);
+    @GetMapping("/all")
+    public List<Product> products(){
+        return productService.products();
     }
 
-    @PutMapping("/update/{id}")
-    public Product product(@PathVariable Long id, @RequestBody ProductDto productDto){
-        return shoppingCartService.update(id, productDto);
+    @PostMapping("/add")
+    public ResponseEntity<ProductResponseDto> addProduct(@Valid @RequestBody ProductRequestDto requestDto) {
+        ProductResponseDto responseDto = productService.createProduct(requestDto);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/getProduct/{id}")
-    public Product getProduct (@PathVariable Long id){
-        return shoppingCartService.getProduct(id);
+    @GetMapping("/product/{id}")
+    public SuccessResponse getProductById(@PathVariable Long id) {
+        return productService.checkProduct(id);
     }
-
 }

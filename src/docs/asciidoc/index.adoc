@@ -1,0 +1,8 @@
+Product Controller
+
+Get Product
+
+Get list of products
+
+
+operation::/listOfStudents[snippets='curl-request,response-fields,http-response,request-fields,response-body']

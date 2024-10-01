@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class ShoppingCartServiceTest {
 
     @InjectMocks
-    private ShoppingCartService productService;
+    private ShoppingCartServiceRedis productService;
     @Mock
     private RedisTemplate<Long, Product> redisTemplate;
     @Mock
