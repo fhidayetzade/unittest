@@ -23,6 +23,13 @@ public class Product implements Serializable {
 
     @Column(nullable = false)
     private String name;
+    private String age;
 
+    @Builder.Default
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<ShoppingCart> shoppingCarts = new HashSet<>();
 
 }
